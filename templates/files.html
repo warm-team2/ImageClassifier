@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Index</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+    />
+  </head>
+  <body>
+    {% if not answer %}
+    <title>Загрузить новый файл</title>
+    <h1>Загрузить новый файл</h1>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+      {% endif %}
+    </form>
+      {% if message %} 
+    <a  class="outline" >{{message}}</a>
+      {% endif %}
+      
+      {% if answer %}
+      <form method=post >
+    <a  class="outline" > Prediction is: {{answer}}</a>
+    <div style="padding: 7px">
+      <select name=true_prediction>
+        {% for correct_answer in correct_answers %}
+          <option value= "{{correct_answer}}" SELECTED>{{correct_answer}} </option>
+        {% endfor %}      
+      </select>
+      <select name=true_class>
+        {% for img_class in img_classes %}
+          <option value= "{{img_class}}" SELECTED>{{img_class}} </option>
+        {% endfor %}      
+        <input type="submit" value=Submit>
+      </select>
+      
+      {% endif %}  
+      
+    </div>    
+    </form>
+    </html>
