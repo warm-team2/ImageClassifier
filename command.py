@@ -12,9 +12,9 @@ import pathlib as pl
 import os
 from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
-from models import Files, GoogleFiles, create_db
+from models import GoogleFiles, create_db
 import random
-
+answer ="other"
 FOLDER_ID = ""
 directory = "DS_uploads"
 current_path = os.getcwd()
@@ -117,11 +117,20 @@ def upload_file():
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
                     input_arr = np.array([input_arr])
-                    prediction = img_clas.predict(input_arr) 
-                    answer = CLASS_DICT[np.argmax(prediction)]
-                    return render_template("files.html", answer = answer, img_classes=list_of_classes, correct_answers= list_of_correct_predictions)
+                    prediction = img_clas.predict(input_arr)
+                    global  answer
+                    prediction = list(prediction)
+                    probability = prediction[0][np.argmax(prediction)]
+                    message = f"Probability is {round(probability*100, 0)}%"
+                    if probability > 0.5:                    
+                        answer = CLASS_DICT[np.argmax(prediction)]                        
+                        return render_template("files.html", answer = answer, img_classes=list_of_classes, correct_answers= list_of_correct_predictions, message=message)
+                    else:
+                        answer = "other"
+                        return render_template("files.html", answer = answer, img_classes=list_of_classes, correct_answers= list_of_correct_predictions, message=message)    
                 
         if true_class == "true":                     
+            
             recorded_file.pred = True
             recorded_file.img_class = int(inv_class_dict[answer])
             session.add(recorded_file)

@@ -9,18 +9,8 @@ from datetime import datetime
 
 Base = declarative_base()
 
-class Files(Base):
-    """Information about Person files"""
-
-    __tablename__ = "files"
-    id = Column(Integer, primary_key=True)
-    file_name = Column(String(50))
-    file_extension = Column(String(50))
-    img_class =  Column(Integer)
-    pred = Boolean()
-
 class GoogleFiles(Base):
-    """Information about Person files"""
+  
 
     __tablename__ = "googlefiles"
     id = Column(Integer, primary_key=True)
