@@ -58,8 +58,7 @@ for item in titlelist1:
         folder_id = item["id"]
         
 
-while True:
-    files = session.query(Files).all()
+while True:    
     google_files = session.query(GoogleFiles).all()
     
     for google_file in google_files: 
