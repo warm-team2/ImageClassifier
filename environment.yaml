@@ -1,0 +1,13 @@
+name: app
+
+channels:
+  - conda-forge
+  - anaconda
+
+dependencies:
+  - flask
+  - tensorflow<2.11
+  - sqlalchemy
+  - numpy
+  - pydrive
+  - werkzeug

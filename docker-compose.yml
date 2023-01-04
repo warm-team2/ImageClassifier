@@ -1,0 +1,13 @@
+version : '3'
+
+services:
+  app:
+    image: ic
+    container_name: icc
+    ports:
+      - "5000:5000"   
+    build: 
+      dockerfile: Dockerfile
+ 
+
+

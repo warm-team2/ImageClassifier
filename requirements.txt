@@ -1,0 +1,7 @@
+flask
+sqlalchemy
+flask_sqlalchemy
+numpy
+pydrive
+tensorflow<2.11
+werkzeug
