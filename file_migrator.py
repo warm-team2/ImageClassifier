@@ -2,7 +2,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Files, GoogleFiles
+from models import GoogleFiles
 import os
 import pathlib as pl
 
