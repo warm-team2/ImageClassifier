@@ -6,3 +6,4 @@ pydrive
 #tensorflow==2.8
 werkzeug
 protobuf==3.20.*
+pillow
