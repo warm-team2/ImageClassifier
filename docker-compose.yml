@@ -2,8 +2,8 @@ version : '3'
 
 services:
   app:
-    image: ic
-    container_name: icc
+    image: img_class
+    container_name: img_class
     ports:
       - "5000:5000"   
     build: 

@@ -6,7 +6,7 @@ channels:
 
 dependencies:
   - flask
-  - tensorflow<2.11
+  - tensorflow=2.8
   - sqlalchemy
   - numpy
   - pydrive

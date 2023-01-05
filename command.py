@@ -127,6 +127,7 @@ def upload_file():
                         return render_template("files.html", answer = answer, img_classes=list_of_classes, correct_answers= list_of_correct_predictions, message=message)
                     else:
                         answer = "other"
+                        
                         return render_template("files.html", answer = answer, img_classes=list_of_classes, correct_answers= list_of_correct_predictions, message=message)    
                 
         if true_class == "true":                     

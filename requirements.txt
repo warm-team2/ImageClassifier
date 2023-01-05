@@ -1,7 +1,8 @@
 flask
 sqlalchemy
-flask_sqlalchemy
+#flask_sqlalchemy
 numpy
 pydrive
-tensorflow<2.11
+#tensorflow==2.8
 werkzeug
+protobuf==3.20.*
