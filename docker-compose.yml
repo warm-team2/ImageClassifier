@@ -2,8 +2,8 @@ version : '3'
 
 services:
   app:
-    image: img_class
-    container_name: img_class
+    image: docker pull dmytrochernyshev/ctf
+    container_name: docker pull dmytrochernyshev/ctf
     ports:
       - "5000:5000"   
     build: 
