@@ -112,8 +112,8 @@ def upload_file():
                     .filter(GoogleFiles.file_name == filename)
                     .first()
                 )
-            
-                image = tf.keras.utils.load_img(UPLOAD_FOLDER+"\\"+filename+"."+file.filename.rsplit(".", 1)[1], target_size=(32, 32))
+                file_path = os.path.join(UPLOAD_FOLDER, f"{filename}.{file.filename.rsplit('.', 1)[1]}")
+                image = tf.keras.utils.load_img(file_path, target_size=(32, 32))
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
                     input_arr = np.array([input_arr])
