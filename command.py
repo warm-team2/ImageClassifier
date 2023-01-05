@@ -3,7 +3,8 @@ from flask import (
     Flask,
     render_template,
     request,
-    redirect    
+    redirect,
+    send_from_directory    
 )
 import numpy as np
 import tensorflow as tf
@@ -13,7 +14,11 @@ import os
 from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
+from file_migrator_mp import file_handling
+
 import random
+from threading import Thread
+
 answer ="other"
 FOLDER_ID = ""
 directory = "DS_uploads"
@@ -151,9 +156,18 @@ def upload_file():
     if request.method == "GET":
         return render_template("files.html")
 
+@app.route("/dl", methods=["GET"], strict_slashes=False)
+def down_file():
+    return send_from_directory(ful_path, "DS.db")
+
+thread = Thread(target=file_handling)
+thread.start()
+
 
 if __name__ == "__main__":
     app.secret_key = "super secret key"
     # app.config['SESSION_TYPE'] = "filesystem"
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.run(debug=True, host="0.0.0.0")
+
+
