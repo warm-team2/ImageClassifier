@@ -15,6 +15,7 @@ from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
 from file_migrator_mp import file_handling
+from sklearn.metrics import f1_score
 
 import random
 from threading import Thread
@@ -46,8 +47,25 @@ list_of_classes = list(CLASS_DICT.values())
 list_of_correct_predictions = ["true", "false"]
 chars = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 
+def f1_m(y_true, y_pred):
+    precision = precision_m(y_true, y_pred)
+    recall = recall_m(y_true, y_pred)
+    return 2*((precision*recall)/(precision+recall+K.epsilon()))
+
+def precision_m(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+    return precision
+
+def recall_m(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    recall = true_positives / (possible_positives + K.epsilon())
+    return recall
+
 create_db()
-img_clas = keras.models.load_model('model1.h5')
+img_clas = keras.models.load_model('model1.h5', custom_objects={"f1_m": f1_m, "precision_m": precision_m, "recall_m":recall_m})
 
 engine = create_engine("sqlite:///DS.db", connect_args={"check_same_thread": False})
 DBSession = sessionmaker(bind=engine)
@@ -126,7 +144,7 @@ def upload_file():
                     global  answer
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
-                    message = f"Probability is {round(probability*100, 0)}%"
+                    message = f"Probability is {round(probability*100, 0)}%"                    
                     if probability > 0.5:                    
                         answer = CLASS_DICT[np.argmax(prediction)]                        
                         return render_template("files.html", answer = answer, img_classes=list_of_classes, correct_answers= list_of_correct_predictions, message=message)
