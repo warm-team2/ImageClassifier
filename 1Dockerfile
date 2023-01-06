@@ -1,0 +1,13 @@
+FROM continuumio/miniconda3
+EXPOSE 5000
+COPY . /command
+WORKDIR /command
+#RUN conda update --name base conda &&\
+RUN    conda env create --file environment.yaml
+#RUN conda create -n tf tensorflow
+#RUN conda activate tf
+RUN pip install -r /command/requirements.txt
+
+ENTRYPOINT ["python"]
+CMD ["command.py", "--host=0.0.0.0"]
+#CMD ["file_migrator.py"]
