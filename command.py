@@ -15,8 +15,6 @@ from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
 from file_migrator_mp import file_handling
-from sklearn.metrics import f1_score
-
 import random
 from threading import Thread
 
