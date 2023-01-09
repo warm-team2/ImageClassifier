@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="icon" href="data:;base64,=">
     <meta charset="UTF-8" />
     <title>Index</title>
     <link
@@ -9,6 +10,14 @@
     />
   </head>
   <body>
+    {% if file_name1 %}
+    <img src="{{ file_name1 }}" alt="Italian Trulli" width="500" height="400">
+    {% endif %}  
+    
+    {% if file_name1 %}
+    <img src="{{ answer_picture }}" alt="Italian Trulli" width="500" height="400">
+    {% endif %}
+
     {% if not answer %}
     <title>Загрузить новый файл</title>
     <h1>Загрузить новый файл</h1>
@@ -19,11 +28,14 @@
     </form>
       {% if message %} 
     <a  class="outline" >{{message}}</a>
-      {% endif %}
-      
+    {% endif %}
+
+
       {% if answer %}
+     
       <form method=post >
     <a  class="outline" > Prediction is: {{answer}}</a>
+    
     <div style="padding: 7px">
       <select name=true_prediction>
         {% for correct_answer in correct_answers %}
@@ -36,6 +48,8 @@
         {% endfor %}      
         <input type="submit" value=Submit>
       </select>
+      
+      
       
       {% endif %}  
       
