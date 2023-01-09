@@ -148,8 +148,8 @@ def upload_file():
                 image = tf.keras.utils.load_img(file_path, target_size=(32, 32, 3))
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
-                    input_arr = np.array([input_arr])
-                    prediction = img_clas.predict(input_arr)
+                    input_arr = np.array([input_arr/255])                   
+                    prediction = img_clas.predict(input_arr)                    
                     global answer
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
@@ -161,6 +161,7 @@ def upload_file():
                     print(file_path1)
                     print(file_path)
                     print(answer_picture)
+                    
                     if probability > 0.5:
                         answer = CLASS_DICT[np.argmax(prediction)]
                         return render_template(
