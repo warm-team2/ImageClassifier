@@ -73,21 +73,22 @@ def file_handling():
         sleep(15)
         new_fileList = drive.ListFile({"q": f"'{folder_id}' in parents and trashed=false"}).GetList()
         #print(new_fileList)
-        for google_file in google_files:
-            if not google_file.file_id:            
+        google_files1 = session.query(GoogleFiles).all()
+        for google_file1 in google_files1:
+            if not google_file1.file_id:            
                 for files in new_fileList:
                     #print(files["title"])
                     if files["title"] == f"{google_file.file_name}.{google_file.file_extension}":                    
-                        google_file.file_id = files["id"]       
+                        google_file1.file_id = files["id"]       
                         session.add(google_file)
                         session.commit()
             sleep(5)
-            item_path=os.path.join(UPLOAD_FOLDER, f"{google_file.file_name}.{google_file.file_extension}")
+            item_path=os.path.join(UPLOAD_FOLDER, f"{google_file1.file_name}.{google_file1.file_extension}")
             path = pl.Path(item_path)
-            if google_file.file_id and path.exists():         
+            if google_file1.file_id and path.exists():         
                 try:
                     os.remove(path)
                 except PermissionError:
-                    print(f"trying to delete  {google_file.file_name}.{google_file.file_extension}")
+                    print(f"trying to delete  {google_file1.file_name}.{google_file1.file_extension}")
 
                     
