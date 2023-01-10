@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
 from file_migrator_mp import file_handling
 import random
+from flask_dropzone import Dropzone
 from threading import Thread
 
 answer = "other"
@@ -73,6 +74,17 @@ session = DBSession()
 
 app = Flask(__name__, static_folder=UPLOAD_FOLDER)
 
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config.update(
+    UPLOADED_PATH=UPLOAD_FOLDER,
+    DROPZONE_MAX_FILE_SIZE = 1024,
+    DROPZONE_TIMEOUT = 5*60*1000,
+    DROPZONE_ALLOWED_FILE_TYPE = 'image',
+    DROPZONE_MAX_FILES = 1
+)
+
+dropzone = Dropzone(app)
+
 
 def allowed_file(filename):
     """Функция проверки расширения файла"""
@@ -96,17 +108,17 @@ def upload_file():
                 shutil.copytree(source_dir, destination_dir)
             if "file" not in request.files:
                 message = "Не могу прочитать файл"
-                render_template("files.html", message=message)
+                render_template("index.html", message=message)
 
             file = request.files["file"]
 
             if file.filename == "":
                 message = "Нет выбранного файла"
-                return render_template("files.html", message=message)
+                return render_template("index.html", message=message)
 
             if file and not allowed_file(file.filename):
                 message = "Расширение не поддерживается"
-                return render_template("files.html", message=message)
+                return render_template("index.html", message=message)
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename.rsplit(".", 1)[0].lower())
@@ -163,6 +175,7 @@ def upload_file():
                     print(answer_picture)
                     if probability > 0.5:
                         answer = CLASS_DICT[np.argmax(prediction)]
+                        print(f"Answer is {answer}")
                         return render_template(
                             "files.html",
                             answer=answer,
@@ -174,7 +187,7 @@ def upload_file():
                         )
                     else:
                         answer = "other"
-
+                        print(f"Answer is {answer}")    
                         return render_template(
                             "files.html",
                             answer=answer,
@@ -204,7 +217,7 @@ def upload_file():
             return redirect("/")
 
     if request.method == "GET":
-        return render_template("files.html")
+        return render_template("index.html")
 
 
 @app.route("/dl", methods=["GET"], strict_slashes=False)
@@ -212,8 +225,8 @@ def down_file():
     return send_from_directory(ful_path, "DS.db")
 
 
-thread = Thread(target=file_handling)
-thread.start()
+# thread = Thread(target=file_handling)
+# thread.start()
 
 
 if __name__ == "__main__":
