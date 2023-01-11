@@ -7,4 +7,3 @@ werkzeug
 protobuf==3.20.*
 pillow
 gunicorn
-tensorflow
