@@ -148,7 +148,7 @@ def upload_file():
                 image = tf.keras.utils.load_img(file_path, target_size=(32, 32, 3))
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
-                    input_arr = np.array([input_arr])
+                    input_arr = np.array([input_arr/255])
                     prediction = img_clas.predict(input_arr)
                     global answer
                     prediction = list(prediction)
