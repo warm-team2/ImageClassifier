@@ -80,20 +80,28 @@ def allowed_file(filename):
         "." in filename and filename.rsplit(".", 1)[1].upper() in LIST_OF_IMAGES_SUFFIX
     )
 
+path = pl.Path(UPLOAD_FOLDER)
+if not path.exists():
+    os.mkdir(path)
+    source_dir = os.path.abspath(os.path.join(ful_path, "cifar_images"))
+    destination_dir = os.path.abspath(
+        os.path.join(UPLOAD_FOLDER, "cifar_images")
+    )
+    shutil.copytree(source_dir, destination_dir)
+    source_dir1 = os.path.abspath(os.path.join(ful_path, "static"))
+    source_dir2 = os.path.abspath(os.path.join(source_dir1, "styles"))
+    destination_dir1 = os.path.abspath(
+        os.path.join(UPLOAD_FOLDER, "styles")
+    )
+    shutil.copytree(source_dir2, destination_dir1)
+
 
 @app.route("/", methods=["GET", "POST"], strict_slashes=False)
 def upload_file():
     if request.method == "POST":
         true_class = request.form.get("true_prediction")
         if not true_class:
-            path = pl.Path(UPLOAD_FOLDER)
-            if not path.exists():
-                os.mkdir(path)
-                source_dir = os.path.abspath(os.path.join(ful_path, "cifar_images"))
-                destination_dir = os.path.abspath(
-                    os.path.join(UPLOAD_FOLDER, "cifar_images")
-                )
-                shutil.copytree(source_dir, destination_dir)
+                       
             if "file" not in request.files:
                 message = "Не могу прочитать файл"
                 render_template("files.html", message=message)
