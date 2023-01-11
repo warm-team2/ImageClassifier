@@ -9,13 +9,13 @@ import os
 from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
-from file_migrator_mp import file_handling
+from file_migrator_mp import file_handling, directory
 import random
 from threading import Thread
 
 answer = "other"
 FOLDER_ID = ""
-directory = "DS_uploads"
+
 current_path = os.getcwd()
 ful_path = os.path.abspath(current_path)
 UPLOAD_FOLDER = os.path.abspath(os.path.join(ful_path, directory))
