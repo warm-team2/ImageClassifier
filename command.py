@@ -165,7 +165,7 @@ def upload_file():
                 image = tf.keras.utils.load_img(file_path, target_size=(32, 32, 3))
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
-                    input_arr = np.array([input_arr])
+                    input_arr = np.array([input_arr/255])
                     prediction = img_clas.predict(input_arr)
                     global answer
                     global answer_picture
@@ -183,16 +183,16 @@ def upload_file():
                         answer = CLASS_DICT[np.argmax(prediction)]
                         print(f"Answer is {answer}")
                         
-                        return render_template("test.html")
-                        # return render_template(
-                        #     "index.html",
-                        #     answer=answer,
-                        #     img_classes=list_of_classes,
-                        #     correct_answers=list_of_correct_predictions,
-                        #     message=message,
-                        #     file_name1=file_path1,
-                        #     answer_picture=answer_picture,
-                        # )
+                        # return render_template("test.html")
+                        return render_template(
+                            "index.html",
+                            answer=answer,
+                            img_classes=list_of_classes,
+                            correct_answers=list_of_correct_predictions,
+                            message=message,
+                            file_name1=file_path1,
+                            answer_picture=answer_picture,
+                        )
                     else:
                         answer = "other"
                         print(f"Answer is {answer}")    
