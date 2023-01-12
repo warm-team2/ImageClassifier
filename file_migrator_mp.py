@@ -8,6 +8,8 @@ import pathlib as pl
 
 from time import sleep
 
+directory = "static"
+
 def file_handling():
     gauth = GoogleAuth()
     gauth.LoadCredentialsFile("mycreds.txt")
@@ -28,7 +30,7 @@ def file_handling():
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
 
-    directory = "DS_uploads"
+
     current_path = os.getcwd()
     ful_path = os.path.abspath(current_path)
     UPLOAD_FOLDER = os.path.abspath(os.path.join(ful_path, directory))
@@ -40,9 +42,9 @@ def file_handling():
             ).GetList()
     titlelist = [x["title"] for x in folderlist]
 
-    if "DS_uploads" not in titlelist:
+    if directory not in titlelist:
         folder_metadata = {
-                "title": "DS_uploads",
+                "title": directory,
                 "mimeType": "application/vnd.google-apps.folder",
             }
         folder = drive.CreateFile(folder_metadata)
@@ -54,7 +56,7 @@ def file_handling():
     titlelist1 = [x for x in folderlist1]
 
     for item in titlelist1:    
-        if str(item["title"]) == "DS_uploads":
+        if str(item["title"]) == directory:
             folder_id = item["id"]
             
 

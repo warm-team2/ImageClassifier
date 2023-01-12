@@ -9,7 +9,7 @@ import os
 from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
-from file_migrator_mp import file_handling
+from file_migrator_mp import file_handling, directory
 import random
 from flask_dropzone import Dropzone
 from threading import Thread
@@ -17,7 +17,7 @@ from threading import Thread
 
 
 FOLDER_ID = ""
-directory = "DS_uploads"
+
 current_path = os.getcwd()
 ful_path = os.path.abspath(current_path)
 UPLOAD_FOLDER = os.path.abspath(os.path.join(ful_path, directory))
@@ -40,6 +40,7 @@ CLASS_DICT = {
 
 answer = "other"
 answer_picture = "../static/styles/nn.png"
+file_path1 = "../static/styles/nn.png"
 recorded_file = ""
 inv_class_dict = {value: key for key, value in CLASS_DICT.items()}
 list_of_classes = list(CLASS_DICT.values())
@@ -77,8 +78,8 @@ engine = create_engine("sqlite:///DS.db", connect_args={"check_same_thread": Fal
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# app = Flask(__name__, static_folder=UPLOAD_FOLDER)
-app = Flask(__name__)
+app = Flask(__name__, static_folder=UPLOAD_FOLDER)
+# app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config.update(
     UPLOADED_PATH=UPLOAD_FOLDER,
@@ -166,10 +167,11 @@ def upload_file():
                 image = tf.keras.utils.load_img(file_path, target_size=(32, 32, 3))
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
-                    input_arr = np.array([input_arr])
+                    input_arr = np.array([input_arr/255])
                     prediction = img_clas.predict(input_arr)
                     global answer
                     global answer_picture
+                    global file_path1
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
                     message = f"Probability is {round(probability*100, 0)}%"
@@ -256,7 +258,7 @@ def result():
             return redirect("/")
     else:
         return render_template("index.html", answer=answer, img_classes=list_of_classes,
-                correct_answers=list_of_correct_predictions, answer_picture=answer_picture)
+                correct_answers=list_of_correct_predictions, answer_picture=file_path1)
 
 # thread = Thread(target=file_handling)
 # thread.start()
