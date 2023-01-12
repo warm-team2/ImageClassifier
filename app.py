@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 import numpy as np
 import shutil
 import tensorflow as tf
@@ -11,9 +11,11 @@ from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
 from file_migrator_mp import file_handling, directory
 import random
+from flask_dropzone import Dropzone
 from threading import Thread
 
-answer = "other"
+
+
 FOLDER_ID = ""
 
 current_path = os.getcwd()
@@ -34,6 +36,11 @@ CLASS_DICT = {
     10: "other",
 }
 
+
+
+answer = "other"
+answer_picture = "../static/styles/nn.png"
+file_path1 = "../static/styles/nn.png"
 recorded_file = ""
 inv_class_dict = {value: key for key, value in CLASS_DICT.items()}
 list_of_classes = list(CLASS_DICT.values())
@@ -72,6 +79,18 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 app = Flask(__name__, static_folder=UPLOAD_FOLDER)
+# app = Flask(__name__)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config.update(
+    UPLOADED_PATH=UPLOAD_FOLDER,
+    DROPZONE_MAX_FILE_SIZE = 1024,
+    DROPZONE_TIMEOUT = 5*60*1000,
+    DROPZONE_ALLOWED_FILE_TYPE = 'image',
+    DROPZONE_MAX_FILES = 1,
+    DROPZONE_DEFAULT_MESSAGE = ""
+)
+
+dropzone = Dropzone(app)
 
 
 def allowed_file(filename):
@@ -96,17 +115,17 @@ def upload_file():
                 shutil.copytree(source_dir, destination_dir)
             if "file" not in request.files:
                 message = "Не могу прочитать файл"
-                render_template("files.html", message=message)
+                render_template("index.html", message=message)
 
             file = request.files["file"]
-
+        
             if file.filename == "":
                 message = "Нет выбранного файла"
-                return render_template("files.html", message=message)
+                return render_template("index.html", message=message)
 
             if file and not allowed_file(file.filename):
                 message = "Расширение не поддерживается"
-                return render_template("files.html", message=message)
+                return render_template("index.html", message=message)
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename.rsplit(".", 1)[0].lower())
@@ -151,6 +170,8 @@ def upload_file():
                     input_arr = np.array([input_arr/255])
                     prediction = img_clas.predict(input_arr)
                     global answer
+                    global answer_picture
+                    global file_path1
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
                     message = f"Probability is {round(probability*100, 0)}%"
@@ -163,27 +184,31 @@ def upload_file():
                     print(answer_picture)
                     if probability > 0.5:
                         answer = CLASS_DICT[np.argmax(prediction)]
-                        return render_template(
-                            "files.html",
-                            answer=answer,
-                            img_classes=list_of_classes,
-                            correct_answers=list_of_correct_predictions,
-                            message=message,
-                            file_name1=file_path1,
-                            answer_picture=answer_picture,
-                        )
+                        print(f"Answer is {answer}")
+                        
+                        return
+                        # return render_template(
+                        #     "index.html",
+                        #     answer=answer,
+                        #     img_classes=list_of_classes,
+                        #     correct_answers=list_of_correct_predictions,
+                        #     message=message,
+                        #     file_name1=file_path1,
+                        #     answer_picture=answer_picture,
+                        # )
                     else:
                         answer = "other"
-
-                        return render_template(
-                            "files.html",
-                            answer=answer,
-                            img_classes=list_of_classes,
-                            correct_answers=list_of_correct_predictions,
-                            message=message,
-                            file_name1=file_path1,
-                            answer_picture=answer_picture,
-                        )
+                        print(f"Answer is {answer}")    
+                        return
+                        # return render_template(
+                        #     "index.html",
+                        #     answer=answer,
+                        #     img_classes=list_of_classes,
+                        #     correct_answers=list_of_correct_predictions,
+                        #     message=message,
+                        #     file_name1=file_path1,
+                        #     answer_picture=answer_picture,
+                        # )
 
         if true_class == "true":
 
@@ -204,13 +229,36 @@ def upload_file():
             return redirect("/")
 
     if request.method == "GET":
-        return render_template("files.html")
-
+        return render_template("index.html")
 
 @app.route("/dl", methods=["GET"], strict_slashes=False)
 def down_file():
     return send_from_directory(ful_path, "DS.db")
 
+@app.route("/result", methods=["GET", "POST"], strict_slashes=False)
+def result():
+    if request.method == "POST":
+        true_class = request.form.get("true_prediction")
+        if true_class == "true":
+
+            recorded_file.pred = True
+            recorded_file.img_class = int(inv_class_dict[answer])
+            session.add(recorded_file)
+            session.commit()
+            return redirect("/")
+
+        elif true_class == "false":
+            recorded_file.pred = False
+            real_class = request.form.get("true_class")
+            real_class = inv_class_dict[real_class]
+            real_class = int(real_class)
+            recorded_file.img_class = real_class
+            session.add(recorded_file)
+            session.commit()
+            return redirect("/")
+    else:
+        return render_template("index.html", answer=answer, img_classes=list_of_classes,
+                correct_answers=list_of_correct_predictions, answer_picture=file_path1)
 
 thread = Thread(target=file_handling)
 thread.start()
