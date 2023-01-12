@@ -39,9 +39,9 @@ CLASS_DICT = {
 
 
 answer = "other"
-answer_picture = "../static/styles/nn.png"
-file_path1 = "../static/styles/nn.png"
-recorded_file = ""
+#answer_picture = "../static/styles/nn.png"
+#file_path1 = "../static/styles/nn.png"
+#recorded_file = ""
 inv_class_dict = {value: key for key, value in CLASS_DICT.items()}
 list_of_classes = list(CLASS_DICT.values())
 list_of_correct_predictions = ["true", "false"]
@@ -186,29 +186,21 @@ def upload_file():
                         answer = CLASS_DICT[np.argmax(prediction)]
                         print(f"Answer is {answer}")
                         
-                        return
-                        # return render_template(
-                        #     "index.html",
-                        #     answer=answer,
-                        #     img_classes=list_of_classes,
-                        #     correct_answers=list_of_correct_predictions,
-                        #     message=message,
-                        #     file_name1=file_path1,
-                        #     answer_picture=answer_picture,
-                        # )
+                        
+
                     else:
                         answer = "other"
                         print(f"Answer is {answer}")    
-                        return
-                        # return render_template(
-                        #     "index.html",
-                        #     answer=answer,
-                        #     img_classes=list_of_classes,
-                        #     correct_answers=list_of_correct_predictions,
-                        #     message=message,
-                        #     file_name1=file_path1,
-                        #     answer_picture=answer_picture,
-                        # )
+                        
+                    return render_template(
+                             "index.html",
+                             answer=answer,
+                             img_classes=list_of_classes,
+                             correct_answers=list_of_correct_predictions,
+                             message=message,
+                             file_name1=file_path1,
+                             answer_picture=answer_picture,
+                         )
 
         if true_class == "true":
 
