@@ -1,9 +1,15 @@
 flask
-sqlalchemy
-#flask_sqlalchemy
+Flask-Dropzone==1.6.0
+gunicorn
 numpy
-pydrive
-werkzeug
+pillow
 protobuf==3.20.*
+<<<<<<< HEAD
 pillow
 Flask-Dropzone==1.6.0
+=======
+pydrive
+sqlalchemy
+https://tf.novaal.de/westmere/tensorflow-2.8.0-cp310-cp310-linux_x86_64.whl
+werkzeug
+>>>>>>> a82b142c01687add5b54d5aef3ff07a6fc0bdc88
