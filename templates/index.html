@@ -31,34 +31,37 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">The picture depicts</h5>
+          <h5 class="modal-title" id="exampleModalLabel">The picture depicts:</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           {% if answer %}
-  <form method=post >
-    <a  class="outline" > Prediction is: {{answer}}</a>
-    <div style="padding: 7px">
-      <select name=true_prediction>
-        {% for correct_answer in correct_answers %}
-          <option value= "{{correct_answer}}" SELECTED>{{correct_answer}} </option>
-        {% endfor %}      
-      </select>
-      <select name=true_class>
-        {% for img_class in img_classes %}
-          <option value= "{{img_class}}" SELECTED>{{img_class}} </option>
-        {% endfor %}      
-        <input type="submit" value=Submit>
-      </select>
-      {% else %}
-      <a  class="outline" >No result available : {{answer}}</a>
-      {% endif %}  
-          <b>{{answer}}</b>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+          <div class="card" style="width: 27rem;">
+            <img class="card-img-top" src={{answer_picture}} alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title h4">The prediction is: {{answer}}</h5>
+            </div>
+            <div class="card-body">
+              <form method=post >                
+                  <select name=true_prediction class="btn btn-secondary dropdown-toggle">
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for correct_answer in correct_answers %}
+                      <option value= "{{correct_answer}}" SELECTED>{{correct_answer}} </option>
+                    {% endfor %}   
+                  </div>   
+                  </select>
+                  <select name=true_class class="btn btn-secondary dropdown-toggle">
+                    {% for img_class in img_classes %}
+                      <option value= "{{img_class}}" SELECTED>{{img_class}} </option>
+                    {% endfor %}      
+                    <input type="submit" value=Submit class="btnred">
+                  </select>
+                </form>
+            </div>
+          </div>
+        {% endif %} 
         </div>
       </div>
     </div>
@@ -78,13 +81,7 @@
              Just drop your file and our neural network will give you the answer. </h2>
     </section>
     <section id="about">
-      <!-- {% if not answer %}
-      <title>Загрузить новый файл</title>
-      <h1>Загрузить новый файл</h1>
-      <form method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=submit value=Upload>
-        {% endif %} -->
+
       {% if not answer %}
      
 <div class="drop-it-hot">
@@ -103,23 +100,25 @@
             <!-- <button type="button" class="btn">Choose image</button> -->
         </div>
     </form>
-    {{ dropzone.create(action="upload_file") }}
-    {{ dropzone.load_js() }}
-    {{ dropzone.config() }}
 
-    <div id="gallery"> 
-      {% if message %} 
-      <a  class="outline" >{{message}}</a>
-        {% endif %}
-    </div>
-  </div>
+    {{ dropzone.create(action="/") }}
+    {{ dropzone.load_js() }}
+    {{ dropzone.config(redirect_url=url_for('result')) }}
+
+    <div id="gallery">  </div>
+    {% else %}
+    <div class="drop-it-hot2">
       <button type="submit" class="btn btn-primary btn2" value="Upload" data-toggle="modal" data-target="#exampleModal">
           See the result
         </button>
     </div>
     {% endif %}
-
 </div>
+{% if message %}
+<div class="alert alert-primary" role="alert">
+  Something went wrong: {{message}}
+</div>
+{% endif %}
 </section>
 </div>
 </body>

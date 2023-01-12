@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 import numpy as np
 import shutil
 import tensorflow as tf
@@ -14,7 +14,8 @@ import random
 from flask_dropzone import Dropzone
 from threading import Thread
 
-answer = "other"
+
+
 FOLDER_ID = ""
 directory = "DS_uploads"
 current_path = os.getcwd()
@@ -35,6 +36,10 @@ CLASS_DICT = {
     10: "other",
 }
 
+
+
+answer = "other"
+answer_picture = "../static/styles/nn.png"
 recorded_file = ""
 inv_class_dict = {value: key for key, value in CLASS_DICT.items()}
 list_of_classes = list(CLASS_DICT.values())
@@ -72,8 +77,8 @@ engine = create_engine("sqlite:///DS.db", connect_args={"check_same_thread": Fal
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-app = Flask(__name__, static_folder=UPLOAD_FOLDER)
-
+# app = Flask(__name__, static_folder=UPLOAD_FOLDER)
+app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config.update(
     UPLOADED_PATH=UPLOAD_FOLDER,
@@ -111,7 +116,7 @@ def upload_file():
                 render_template("index.html", message=message)
 
             file = request.files["file"]
-
+        
             if file.filename == "":
                 message = "Нет выбранного файла"
                 return render_template("index.html", message=message)
@@ -163,6 +168,7 @@ def upload_file():
                     input_arr = np.array([input_arr])
                     prediction = img_clas.predict(input_arr)
                     global answer
+                    global answer_picture
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
                     message = f"Probability is {round(probability*100, 0)}%"
@@ -176,20 +182,22 @@ def upload_file():
                     if probability > 0.5:
                         answer = CLASS_DICT[np.argmax(prediction)]
                         print(f"Answer is {answer}")
-                        return render_template(
-                            "files.html",
-                            answer=answer,
-                            img_classes=list_of_classes,
-                            correct_answers=list_of_correct_predictions,
-                            message=message,
-                            file_name1=file_path1,
-                            answer_picture=answer_picture,
-                        )
+                        
+                        return render_template("test.html")
+                        # return render_template(
+                        #     "index.html",
+                        #     answer=answer,
+                        #     img_classes=list_of_classes,
+                        #     correct_answers=list_of_correct_predictions,
+                        #     message=message,
+                        #     file_name1=file_path1,
+                        #     answer_picture=answer_picture,
+                        # )
                     else:
                         answer = "other"
                         print(f"Answer is {answer}")    
                         return render_template(
-                            "files.html",
+                            "index.html",
                             answer=answer,
                             img_classes=list_of_classes,
                             correct_answers=list_of_correct_predictions,
@@ -219,11 +227,14 @@ def upload_file():
     if request.method == "GET":
         return render_template("index.html")
 
-
 @app.route("/dl", methods=["GET"], strict_slashes=False)
 def down_file():
     return send_from_directory(ful_path, "DS.db")
 
+@app.route("/result", methods=["GET", "POST"], strict_slashes=False)
+def result():
+    return render_template("index.html", answer=answer, img_classes=list_of_classes,
+                correct_answers=list_of_correct_predictions, answer_picture=answer_picture)
 
 # thread = Thread(target=file_handling)
 # thread.start()

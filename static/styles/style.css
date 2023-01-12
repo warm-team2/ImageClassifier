@@ -28,6 +28,19 @@ body {
     overflow: hidden;
     opacity: 0.8;
 }
+.drop-it-hot2 {
+    background-color: white;
+    border-radius: 15px;
+    width: 500px;
+    height: 370px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 15px 0 rgba(black, .1);
+    overflow: hidden;
+    opacity: 0.5;
+}
 
 .drop-it-hot:after {
     content: '';
@@ -283,17 +296,28 @@ svg {
     transition: background-color 200ms ease-in;
     z-index: 1;
 }
-.btn2 {
+.btnred {
     border: none;
-    bottom: 5%;  
-    position: absolute;
-    /* padding: 10px 20px;
+    padding: 10px 20px;
+    margin-left: 5px;
     border-radius: 50px;
-    background-color: black;
+    background-color: green;
     color: white;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 200ms ease-in; */
+    transition: background-color 200ms ease-in;
+    z-index: 1;}
+.btn2 {
+    background-color: black;
+    border: none;  
+    position: absolute;
+    opacity: 1;}
+.btn3 {
+        background-color: black;
+        bottom: 50px;
+        border: none;  
+        position: absolute;
+        opacity: 1;
 }
 #gallery {
     position: absolute;
