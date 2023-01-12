@@ -11,11 +11,12 @@
         <style>
           .dropzone {
               border: none;
+              background: none;
               margin: 5%;
               min-height: 300px;
               width: 300px;
               z-index: 10;
-              opacity: 0.5;
+              opacity: 1;
               position: absolute;
               
           }
@@ -103,7 +104,7 @@
 
     {{ dropzone.create(action="/") }}
     {{ dropzone.load_js() }}
-    {{ dropzone.config(redirect_url=url_for('result')) }}
+    {{ dropzone.config(redirect_url=url_for('result')+"#about") }}
 
     <div id="gallery">  </div>
     {% else %}
@@ -119,6 +120,13 @@
   Something went wrong: {{message}}
 </div>
 {% endif %}
+<div class="drop-it-hot3">
+<a href="{{url_for('upload_file')}}" >
+<button type="submit" class="btn btn-primary btn3" >
+  Restart
+</button>
+</a>
+</div>
 </section>
 </div>
 </body>

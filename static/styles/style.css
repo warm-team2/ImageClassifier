@@ -41,6 +41,17 @@ body {
     overflow: hidden;
     opacity: 0.5;
 }
+.drop-it-hot3 {
+    background-color: none;
+    border-radius: 15px;
+    bottom: 15px;
+    width: 500px;
+    height: 40px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .drop-it-hot:after {
     content: '';
@@ -314,11 +325,13 @@ svg {
     opacity: 1;}
 .btn3 {
         background-color: black;
+        /* left: 47%; */
         bottom: 50px;
         border: none;  
-        position: absolute;
+        position: relative;
         opacity: 1;
 }
+
 #gallery {
     position: absolute;
     height: 100%;
@@ -409,9 +422,12 @@ input[type=range]::-ms-thumb {
     cursor: pointer;
 }
 
-.dz-preview, .dz-file-preview, .dz-error, .dz-complete, .dz-image, .dz-error-message, .dz-success-mark, .dz-error-mark {
-    position: absolute;
+.dz-preview, .dz-file-preview, .dz-error, .dz-complete, .dz-image, .dz-error-message, .dz-success-mark, .dz-error-mark .dz-image-preview{
+    position: relative;
     margin: 20%;
     z-index: 20;
-    opacity: 0.9;
+    opacity: 1;
+    width: 200px;
+    height: 200px;
+    background: none
 }

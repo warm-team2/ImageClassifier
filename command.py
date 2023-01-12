@@ -85,7 +85,8 @@ app.config.update(
     DROPZONE_MAX_FILE_SIZE = 1024,
     DROPZONE_TIMEOUT = 5*60*1000,
     DROPZONE_ALLOWED_FILE_TYPE = 'image',
-    DROPZONE_MAX_FILES = 1
+    DROPZONE_MAX_FILES = 1,
+    DROPZONE_DEFAULT_MESSAGE = ""
 )
 
 dropzone = Dropzone(app)
@@ -183,7 +184,7 @@ def upload_file():
                         answer = CLASS_DICT[np.argmax(prediction)]
                         print(f"Answer is {answer}")
                         
-                        return render_template("test.html")
+                        return
                         # return render_template(
                         #     "index.html",
                         #     answer=answer,
@@ -196,15 +197,16 @@ def upload_file():
                     else:
                         answer = "other"
                         print(f"Answer is {answer}")    
-                        return render_template(
-                            "index.html",
-                            answer=answer,
-                            img_classes=list_of_classes,
-                            correct_answers=list_of_correct_predictions,
-                            message=message,
-                            file_name1=file_path1,
-                            answer_picture=answer_picture,
-                        )
+                        return
+                        # return render_template(
+                        #     "index.html",
+                        #     answer=answer,
+                        #     img_classes=list_of_classes,
+                        #     correct_answers=list_of_correct_predictions,
+                        #     message=message,
+                        #     file_name1=file_path1,
+                        #     answer_picture=answer_picture,
+                        # )
 
         if true_class == "true":
 
@@ -233,7 +235,27 @@ def down_file():
 
 @app.route("/result", methods=["GET", "POST"], strict_slashes=False)
 def result():
-    return render_template("index.html", answer=answer, img_classes=list_of_classes,
+    if request.method == "POST":
+        true_class = request.form.get("true_prediction")
+        if true_class == "true":
+
+            recorded_file.pred = True
+            recorded_file.img_class = int(inv_class_dict[answer])
+            session.add(recorded_file)
+            session.commit()
+            return redirect("/")
+
+        elif true_class == "false":
+            recorded_file.pred = False
+            real_class = request.form.get("true_class")
+            real_class = inv_class_dict[real_class]
+            real_class = int(real_class)
+            recorded_file.img_class = real_class
+            session.add(recorded_file)
+            session.commit()
+            return redirect("/")
+    else:
+        return render_template("index.html", answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=answer_picture)
 
 # thread = Thread(target=file_handling)
