@@ -92,15 +92,15 @@
             <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
         </svg>
     </div>  
-{#    <form class="choose-files" method=post enctype=multipart/form-data>#}
-{#        <div class="button-wrapper">#}
-{#            <label class="label" for="fileElem">Drag image here to upload or</label>#}
+    <form class="choose-files" method=post enctype=multipart/form-data>
+        <div class="button-wrapper">
+            <label class="label" for="fileElem">Drag image here to upload or tap</label>
 {#            <input type=file name=file>#}
-{#            <input type=submit class="btn" value="Choose image">#}
-{#            <!-- <input type=file name=file> -->#}
-{#            <!-- <button type="button" class="btn">Choose image</button> -->#}
-{#        </div>#}
-{#    </form>#}
+            <!-- <input type=submit class="btn" value="Choose image"> -->
+            <!-- <input type=file name=file> -->
+            <!-- <button type="button" class="btn">Choose image</button> -->
+        </div>
+    </form>
 
     {{ dropzone.create(action="/") }}
     {{ dropzone.load_js() }}
