@@ -168,7 +168,7 @@ def upload_file():
                         answer = "other"
 
                         print(f"Answer is {answer}")    
-                        
+                    sleep(3)
                     return "." 
 
     if request.method == "GET":
