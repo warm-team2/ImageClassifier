@@ -1,3 +1,5 @@
+from time import sleep
+
 from sqlalchemy import create_engine
 from flask import Flask, render_template, request, redirect, send_from_directory, url_for
 import numpy as np
@@ -190,8 +192,8 @@ def upload_file():
 
                     else:
                         answer = "other"
-                        print(f"Answer is {answer}")    
-                        
+                        print(f"Answer is {answer}")
+                    sleep(4)
                     return render_template(
                              "index.html",
                              answer=answer,
