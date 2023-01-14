@@ -149,7 +149,7 @@ def upload_file():
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
                     input_arr = np.array([input_arr/255])
-                    prediction = img_clas.predict(input_arr2saw)
+                    prediction = img_clas.predict(input_arr)
                     global answer
                     #global answer_picture
                     global file_path1
