@@ -144,7 +144,7 @@ svg {
     display: flex;
     width: 100%;
     min-height: 59px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     background-image: linear-gradient(180deg, blue, rgba(29,30,34,0.1), transparent);
 }
 
