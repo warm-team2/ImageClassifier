@@ -33,7 +33,7 @@ def file_handling():
 
     current_path = os.getcwd()
     ful_path = os.path.abspath(current_path)
-    UPLOAD_FOLDER = os.path.abspath(os.path.join(ful_path, directory))
+    
 
     drive = GoogleDrive(gauth)
 
@@ -56,16 +56,18 @@ def file_handling():
     titlelist1 = [x for x in folderlist1]
 
     for item in titlelist1:    
-        if str(item["title"]) == directory:
+        if str(item["title"]) == "static":
+            global folder_id
             folder_id = item["id"]
             
 
     while True:    
+        UPLOAD_FOLDER = os.path.abspath(os.path.join(ful_path, directory))
         google_files = session.query(GoogleFiles).all()
         
         for google_file in google_files: 
             if not google_file.file_id:
-                realpath = os.getcwd()            
+                          
                 os.chdir(UPLOAD_FOLDER)
                 gfile = drive.CreateFile(
                         {"parents": [{"kind": "drive#fileLink", "id": folder_id}]}

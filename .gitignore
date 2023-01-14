@@ -5,6 +5,8 @@ __pycache__/
 *$py.class
 client_secrets.json
 mycreds.txt
+DS.db
+static/
 
 # C extensions
 *.so

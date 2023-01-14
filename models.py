@@ -19,7 +19,7 @@ class GoogleFiles(Base):
     file_id = Column(String(100))
     img_class = Column(Integer)
     pred = Column(Boolean, default=False)
-    created = Column(DateTime, default=datetime.now())
+    created = Column(DateTime, default=datetime.utcnow)
 
 
 def create_db():
