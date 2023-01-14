@@ -431,3 +431,9 @@ input[type=range]::-ms-thumb {
     height: 200px;
     background: none
 }
+
+.card-img-top {
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    }
