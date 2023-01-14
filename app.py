@@ -87,7 +87,8 @@ app.config.update(
     DROPZONE_TIMEOUT = 5*60*1000,
     DROPZONE_ALLOWED_FILE_TYPE = 'image',
     DROPZONE_MAX_FILES = 1,
-    DROPZONE_DEFAULT_MESSAGE = ""
+    DROPZONE_DEFAULT_MESSAGE = "",
+    DROPZONE_UPLOAD_BTN_ID='submit1'
 )
 
 dropzone = Dropzone(app)
@@ -168,10 +169,11 @@ def upload_file():
                 if image:
                     input_arr = tf.keras.utils.img_to_array(image)
                     input_arr = np.array([input_arr/255])
-                    prediction = img_clas.predict(input_arr)
+                    prediction = img_clas.predict(input_arr2saw)
                     global answer
                     global answer_picture
                     global file_path1
+                    global probability
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
                     message = f"Probability is {round(probability*100, 0)}%"
@@ -191,7 +193,7 @@ def upload_file():
                     else:
                         answer = "other"
                         print(f"Answer is {answer}")    
-                        
+                    # return  dropzone.config(redirect_url=url_for('result')+"#about")    
                     return render_template(
                              "index.html",
                              answer=answer,
@@ -200,6 +202,7 @@ def upload_file():
                              message=message,
                              file_name1=file_path1,
                              answer_picture=answer_picture,
+                             probability = probability
                          )
 
         if true_class == "true":
@@ -250,7 +253,7 @@ def result():
             return redirect("/")
     else:
         return render_template("index.html", answer=answer, img_classes=list_of_classes,
-                correct_answers=list_of_correct_predictions, answer_picture=file_path1)
+                correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
 thread = Thread(target=file_handling)
 thread.start()
