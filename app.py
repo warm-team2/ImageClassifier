@@ -76,7 +76,10 @@ app.config.update(
     DROPZONE_ALLOWED_FILE_TYPE = 'image',
     DROPZONE_MAX_FILES = 1,
     DROPZONE_DEFAULT_MESSAGE = "",
-    DROPZONE_UPLOAD_BTN_ID='submit1'
+    # DROPZONE_UPLOAD_BTN_ID='submit1',
+    # DROPZONE_UPLOAD_ACTION="result",
+    # DROPZONE_IN_FORM=True,
+    # DROPZONE_UPLOAD_ON_CLICK=True
 )
 
 dropzone = Dropzone(app)
@@ -205,8 +208,8 @@ def result():
         return render_template("index.html", answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
-thread = Thread(target=file_handling)
-thread.start()
+# thread = Thread(target=file_handling)
+# thread.start()
 
 
 if __name__ == "__main__":

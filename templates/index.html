@@ -13,9 +13,9 @@
               border: none;
               background: none;
               margin: 5%;
-              min-height: 300px;
+              min-height: 350px;
               width: 300px;
-              z-index: 10;
+              z-index: 15;
               opacity: 1;
               position: absolute;
               
@@ -93,11 +93,12 @@
     <form class="choose-files" method=post enctype=multipart/form-data>
         <div class="button-wrapper">
             <label class="label" for="fileElem">Drag image here to upload or</label>
-            <input type=file name=file>
-            <input type=submit class="btn" value="Choose image">
             <!-- <input type=file name=file> -->
-            <!-- <button type="button" class="btn">Choose image</button> -->
+            <!-- <input type=submit class="btn" value="Choose image"> -->
+            <!-- <input type=file name=file> -->
+            <button type="button" class="btn">Choose image</button>
         </div>
+        <!-- <input type="submit" id="submit1" class="btn" value="Submit and Upload"> -->
     </form>
 
     {{ dropzone.create(action="/") }}
