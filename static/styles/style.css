@@ -144,7 +144,7 @@ svg {
     display: flex;
     width: 100%;
     min-height: 59px;
-    font-size: 1rem;
+    font-size: 1.5rem;
     background-image: linear-gradient(180deg, blue, rgba(29,30,34,0.1), transparent);
 }
 
@@ -165,7 +165,7 @@ svg {
 .header ul li a{
     position: relative;
     text-decoration: none;
-    text-transform: uppercase;
+    #text-transform: uppercase;
     font-weight: 599;
     color: #f4f4f4;
 
@@ -302,7 +302,7 @@ svg {
     border-radius: 50px;
     background-color: black;
     color: white;
-    font-size: 16px;
+    font-size: 24px;
     cursor: pointer;
     transition: background-color 200ms ease-in;
     z-index: 1;
