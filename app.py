@@ -77,7 +77,11 @@ app.config.update(
     DROPZONE_TIMEOUT = 5*60*1000,
     DROPZONE_ALLOWED_FILE_TYPE = 'image',
     DROPZONE_MAX_FILES = 1,
-    DROPZONE_DEFAULT_MESSAGE = ""
+    DROPZONE_DEFAULT_MESSAGE = "",
+    # DROPZONE_UPLOAD_BTN_ID='submit1',
+    # DROPZONE_UPLOAD_ACTION="result",
+    # DROPZONE_IN_FORM=True,
+    # DROPZONE_UPLOAD_ON_CLICK=True
 )
 
 dropzone = Dropzone(app)
@@ -156,7 +160,12 @@ def upload_file():
                     input_arr = tf.keras.utils.img_to_array(image)
                     input_arr = np.array([input_arr/255])
                     prediction = img_clas.predict(input_arr)
-                    
+
+                    global answer
+                    #global answer_picture
+                    global file_path1
+                    global probability
+
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
                     message = f"Probability is {round(probability*100, 0)}%"
@@ -212,7 +221,9 @@ def result():
     else:
 
         while not data_uploaded :
-                return render_template("index.html", answer=answer, img_classes=list_of_classes,
+            pass
+            
+        return render_template("index.html", answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
 thread = Thread(target=file_handling)

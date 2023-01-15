@@ -13,9 +13,9 @@
               border: none;
               background: none;
               margin: 5%;
-              min-height: 300px;
+              min-height: 350px;
               width: 300px;
-              z-index: 10;
+              z-index: 15;
               opacity: 1;
               position: absolute;
               
@@ -24,15 +24,13 @@
     </head>
 <body>
 
-
   
   <!-- Modal -->
-
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-<!--          <h5 class="modal-title" id="exampleModalLabel">The picture depicts:</h5>-->
+         <h5 class="modal-title" id="exampleModalLabel">Probability: {{probability}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -95,11 +93,12 @@
     <form class="choose-files" method=post enctype=multipart/form-data>
         <div class="button-wrapper">
             <label class="label" for="fileElem">Drag image here to upload or</label>
-            <input type=file name=file>
-            <input type=submit class="btn" value="Choose image">
             <!-- <input type=file name=file> -->
-            <!-- <button type="button" class="btn">Choose image</button> -->
+            <!-- <input type=submit class="btn" value="Choose image"> -->
+            <!-- <input type=file name=file> -->
+            <button type="button" class="btn">Choose image</button>
         </div>
+        <!-- <input type="submit" id="submit1" class="btn" value="Submit and Upload"> -->
     </form>
 
     {{ dropzone.create(action="/") }}
@@ -126,6 +125,7 @@
   Restart
 </button>
 </a>
+<!-- <input type="submit" id="submit1" class="btn btn-primary btn2" value="Submit and Upload"> -->
 </div>
 </section>
 </div>
