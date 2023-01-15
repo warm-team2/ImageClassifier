@@ -11,13 +11,13 @@ import os
 from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
-from file_migrator_mp import file_handling, directory
+from file_migrator_mp import file_handling
 import random
 from flask_dropzone import Dropzone
 from threading import Thread
 
 
-
+directory = "static"
 FOLDER_ID = ""
 
 current_path = os.getcwd()
@@ -245,11 +245,12 @@ def result():
         return render_template(index, answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
-thread = Thread(target=file_handling)
-thread.start()
+
 
 
 if __name__ == "__main__":
+    thread = Thread(target=file_handling)
+    thread.start()
     app.secret_key = "super secret key"    
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.run(debug=True, host="0.0.0.0")
