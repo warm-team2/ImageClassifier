@@ -11,13 +11,13 @@ import os
 from sqlalchemy.orm import sessionmaker
 from werkzeug.utils import secure_filename
 from models import GoogleFiles, create_db
-from file_migrator_mp import file_handling, directory
+from file_migrator_mp import file_handling
 import random
 from flask_dropzone import Dropzone
 from threading import Thread
 
 
-
+directory = "static"
 FOLDER_ID = ""
 
 current_path = os.getcwd()
