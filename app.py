@@ -96,6 +96,15 @@ def allowed_file(filename):
 
 @app.route("/", methods=["GET", "POST"], strict_slashes=False)
 def upload_file():
+
+    user_agent = request.headers.get('User-Agent')
+    user_agent = user_agent.lower()
+
+    if ("iphone" in user_agent) or ("android" in user_agent):
+        index = "mobile.index.html"
+    else:
+        index = "index.html"
+
     global answer
     global file_path1
     global data_uploaded
@@ -106,17 +115,17 @@ def upload_file():
         if not true_class:            
             if "file" not in request.files:
                 message = "Не могу прочитать файл"
-                render_template("index.html", message=message)
+                render_template(index, message=message)
 
             file = request.files["file"]
         
             if file.filename == "":
                 message = "Нет выбранного файла"
-                return render_template("index.html", message=message)
+                return render_template(index, message=message)
 
             if file and not allowed_file(file.filename):
                 message = "Расширение не поддерживается"
-                return render_template("index.html", message=message)
+                return render_template(index, message=message)
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename.rsplit(".", 1)[0].lower())
@@ -191,7 +200,7 @@ def upload_file():
         probability = 0
         file_path1 = None
 
-        return render_template("index.html")
+        return render_template(index)
 
 @app.route("/dl", methods=["GET"], strict_slashes=False)
 def down_file():
@@ -199,6 +208,16 @@ def down_file():
 
 @app.route("/result", methods=["GET", "POST"], strict_slashes=False)
 def result():
+
+    user_agent = request.headers.get('User-Agent')
+    user_agent = user_agent.lower()
+
+    if ("iphone" in user_agent) or ("android" in user_agent):
+        index = "mobile.index.html"
+    else:
+        index = "index.html"
+
+
     if request.method == "POST":
         true_class = request.form.get("true_prediction")
         if true_class == "true":
@@ -223,7 +242,7 @@ def result():
         while not data_uploaded :
             pass
             
-        return render_template("index.html", answer=answer, img_classes=list_of_classes,
+        return render_template(index, answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
 thread = Thread(target=file_handling)
