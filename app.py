@@ -211,10 +211,7 @@ def result():
             return redirect("/")
     else:
 
-        while True:
-            if data_uploaded == False:
-                pass
-            else:
+        while not data_uploaded :
                 return render_template("index.html", answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
