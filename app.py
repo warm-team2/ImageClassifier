@@ -41,6 +41,8 @@ CLASS_DICT = {
 
 
 answer = "other"
+data_uploaded = False
+probability = 0
 inv_class_dict = {value: key for key, value in CLASS_DICT.items()}
 list_of_classes = list(CLASS_DICT.values())
 list_of_correct_predictions = ["true", "false"]
@@ -94,6 +96,11 @@ def allowed_file(filename):
 
 @app.route("/", methods=["GET", "POST"], strict_slashes=False)
 def upload_file():
+    global answer
+    global file_path1
+    global data_uploaded
+    global probability
+
     if request.method == "POST":
         true_class = request.form.get("true_prediction")
         if not true_class:            
@@ -153,10 +160,12 @@ def upload_file():
                     input_arr = tf.keras.utils.img_to_array(image)
                     input_arr = np.array([input_arr/255])
                     prediction = img_clas.predict(input_arr)
+
                     global answer
                     #global answer_picture
                     global file_path1
                     global probability
+
                     prediction = list(prediction)
                     probability = prediction[0][np.argmax(prediction)]
                     message = f"Probability is {round(probability*100, 0)}%"
@@ -167,16 +176,21 @@ def upload_file():
                     if probability > 0.5:
                         answer = CLASS_DICT[np.argmax(prediction)]
                         print(f"Answer is {answer}")
-                        
 
                     else:
                         answer = "other"
 
-                        print(f"Answer is {answer}")    
-                        
+                        print(f"Answer is {answer}")
+                    
+                    data_uploaded = True    
                     return "." 
 
     if request.method == "GET":
+        data_uploaded = False
+        answer = None
+        probability = 0
+        file_path1 = None
+
         return render_template("index.html")
 
 @app.route("/dl", methods=["GET"], strict_slashes=False)
@@ -205,11 +219,15 @@ def result():
             session.commit()
             return redirect("/")
     else:
+
+        while not data_uploaded :
+            pass
+            
         return render_template("index.html", answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1, probability=probability)
 
-# thread = Thread(target=file_handling)
-# thread.start()
+thread = Thread(target=file_handling)
+thread.start()
 
 
 if __name__ == "__main__":
