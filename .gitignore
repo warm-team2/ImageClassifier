@@ -6,7 +6,7 @@ __pycache__/
 client_secrets.json
 mycreds.txt
 DS.db
-static/
+static / cifar_images
 
 # C extensions
 *.so
