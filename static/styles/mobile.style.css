@@ -18,8 +18,8 @@ body {
 .drop-it-hot {
     background-color: none;
     border-radius: 15px;
-    width: 500px;
-    height: 370px;
+    width: 700px;
+    height: 700px;
     position: absolute;
     display: flex;
     align-items: center;
@@ -31,8 +31,8 @@ body {
 .drop-it-hot2 {
     background-color: white;
     border-radius: 15px;
-    width: 500px;
-    height: 370px;
+    width: 700px;
+    height: 700px;
     position: absolute;
     display: flex;
     align-items: center;
@@ -46,7 +46,7 @@ body {
     border-radius: 15px;
     bottom: 15px;
     width: 500px;
-    height: 40px;
+    height: 350px;
     position: absolute;
     display: flex;
     align-items: center;
@@ -82,8 +82,8 @@ body {
 }
 
 svg {
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 70px;
 }
 
 .circle:before {
@@ -102,8 +102,8 @@ svg {
 .circle:after {
     content: '';
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
 }
 
@@ -144,7 +144,7 @@ svg {
     display: flex;
     width: 100%;
     min-height: 59px;
-    font-size: 1.2rem;
+    font-size: 4rem;
     background-image: linear-gradient(180deg, blue, rgba(29,30,34,0.1), transparent);
 }
 
@@ -202,11 +202,11 @@ section{
 }
 section h2{
     text-transform: uppercase;
-    font-size: 1.5rem;
+    font-size: 3.5rem;
     font-weight: 900;
     padding: 10px 21px;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 10%;
+    margin-right: 10%;
     line-height: 200%;
     text-align: center;
     color: 1dle22;  
@@ -281,9 +281,9 @@ svg {
 
 
 .label {
-    margin-bottom: 20px;
+    margin-bottom: 60px;
     color: #4E5056;
-    font-size: 18px;
+    font-size: 40px;
     z-index: 12;
 }
 
@@ -302,19 +302,19 @@ svg {
     border-radius: 50px;
     background-color: black;
     color: white;
-    font-size: 16px;
+    font-size: 40px;
     cursor: pointer;
     transition: background-color 200ms ease-in;
     z-index: 1;
 }
 .btnred {
     border: none;
-    padding: 10px 20px;
-    margin-left: 5px;
+    padding: 20px 20px;
+    margin-left: 25px;
     border-radius: 50px;
     background-color: green;
     color: white;
-    font-size: 16px;
+    font-size: 40px;
     cursor: pointer;
     transition: background-color 200ms ease-in;
     z-index: 1;}
@@ -322,10 +322,11 @@ svg {
     background-color: black;
     border: none;  
     position: absolute;
-    opacity: 1;}
+    opacity: 1;
+    font-size: 60px;}
 .btn3 {
         background-color: black;
-        /* left: 47%; */
+        font-size: 60px;
         bottom: 50px;
         border: none;  
         position: relative;
@@ -436,4 +437,30 @@ input[type=range]::-ms-thumb {
     width: 100%;
     height: 50vh;
     object-fit: cover;
+    }
+
+.modal-dialog {
+    max-width: 800px;
+    margin: 1rem auto;
+    }
+
+.close {
+    float: right;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    }
+.h4, h4 {
+    font-size: 2.1rem;
+    }
+.opt1 {
+    font-size: 25px;
+    }
+    
+.dropup .dropdown-menu {
+        margin-top: 0;
+        margin-bottom: 0.125rem;
     }

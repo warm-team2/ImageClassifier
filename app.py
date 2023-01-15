@@ -237,7 +237,6 @@ def result():
             session.commit()
             return redirect("/")
     else:
-
         while not data_uploaded :
             pass
             
