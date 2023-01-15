@@ -203,11 +203,12 @@ def result():
         return render_template("index.html", answer=answer, img_classes=list_of_classes,
                 correct_answers=list_of_correct_predictions, answer_picture=file_path1)
 
-thread = Thread(target=file_handling)
-thread.start()
+
 
 
 if __name__ == "__main__":
+    thread = Thread(target=file_handling)
+    thread.start()
     app.secret_key = "super secret key"    
     app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
     app.run(debug=True, host="0.0.0.0")
