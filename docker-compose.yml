@@ -2,7 +2,7 @@ version : '3'
 
 services:
   app:
-    image: dmytrochernyshev/ctf2
+    image: dmytrochernyshev/ctf
     container_name: ctf
     ports:
       - "5000:5000"   

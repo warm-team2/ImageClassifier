@@ -243,6 +243,7 @@ def result():
 
 @app.route("/dg", methods=["GET"], strict_slashes=False)
 def send_to_google_file():
+    global gauth
     gauth = GoogleAuth()
     gauth.LoadCredentialsFile("mycreds.txt")
     if gauth.credentials is None:
@@ -258,9 +259,8 @@ def send_to_google_file():
     gauth.SaveCredentialsFile("mycreds.txt") 
 
     current_path = os.getcwd()
-    ful_path = os.path.abspath(current_path)
-    
-
+        
+    global drive
     drive = GoogleDrive(gauth)
 
     folderlist = drive.ListFile(
@@ -285,20 +285,24 @@ def send_to_google_file():
         if str(item["title"]) == "static":
             global folder_id
             folder_id = item["id"]
-    UPLOAD_FOLDER = os.path.abspath(os.path.join(ful_path, directory))
+
     google_files = session.query(GoogleFiles).all()
-        
+    os.chdir(UPLOAD_FOLDER)    
     for google_file in google_files: 
-        if not google_file.file_id:                          
-            os.chdir(UPLOAD_FOLDER)
+        
+        if not google_file.file_id:                         
+            #print(os.getcwd())
             gfile = drive.CreateFile(
                         {"parents": [{"kind": "drive#fileLink", "id": folder_id}]}
                     )
             gfile.SetContentFile(f"{google_file.file_name}.{google_file.file_extension}")
-            gfile.Upload()
-    sleep(3)
-    new_fileList = drive.ListFile({"q": f"'{folder_id}' in parents and trashed=false"}).GetList()
-        #print(new_fileList)
+            gfile.Upload()    
+    os.chdir(current_path)
+    return redirect("/")
+
+@app.route("/gd", methods=["GET"], strict_slashes=False)   
+def send_from_google_disk_to_DB():    
+    new_fileList = drive.ListFile({"q": f"'{folder_id}' in parents and trashed=false"}).GetList()        
     google_files1 = session.query(GoogleFiles).all()
     for google_file1 in google_files1:
         if not google_file1.file_id:            
@@ -306,20 +310,23 @@ def send_to_google_file():
                     #print(files["title"])
                 if files["title"] == f"{google_file1.file_name}.{google_file1.file_extension}":                    
                     google_file1.file_id = files["id"]       
-                    session.add(google_file)
+                    session.add(google_file1)
                     session.commit()
-                sleep(5)
-                item_path=os.path.join(UPLOAD_FOLDER, f"{google_file1.file_name}.{google_file1.file_extension}")
-                path = pl.Path(item_path)
-                if google_file1.file_id and path.exists():         
-                    try:
-                        os.remove(path)
-                    except PermissionError:
-                        print(f"trying to delete  {google_file1.file_name}.{google_file1.file_extension}")
-                        os.chdir(current_path)
-                        return redirect("/")
+    return redirect("/")
 
-        os.chdir(current_path)
+@app.route("/del", methods=["GET"], strict_slashes=False)   
+def del_files():
+    google_files2 = session.query(GoogleFiles).all()
+    for google_file2 in google_files2:       
+        item_path=os.path.join(UPLOAD_FOLDER, f"{google_file2.file_name}.{google_file2.file_extension}")
+        path = pl.Path(item_path)
+        if google_file2.file_id and path.exists():         
+            try:
+                os.remove(path)
+            except PermissionError:
+                print(f"trying to delete  {google_file2.file_name}.{google_file2.file_extension}")
+                os.chdir(current_path)
+                return redirect("/")        
     return redirect("/")
 
 
