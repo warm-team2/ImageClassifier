@@ -103,7 +103,7 @@
 
     {{ dropzone.create(action="/") }}
     {{ dropzone.load_js() }}
-    <!-- {{ dropzone.config(redirect_url=url_for('result')+"#about") }} -->
+    {{ dropzone.config(redirect_url=url_for('result')+"#about") }}
 
     <div id="gallery">  </div>
     {% else %}
