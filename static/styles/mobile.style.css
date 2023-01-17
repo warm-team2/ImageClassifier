@@ -423,19 +423,30 @@ input[type=range]::-ms-thumb {
     cursor: pointer;
 }
 
-.dz-preview, .dz-file-preview, .dz-error, .dz-complete, .dz-image, .dz-error-message, .dz-success-mark, .dz-error-mark .dz-image-preview{
+.dz-preview, .dz-file-preview, .dz-complete, .dz-image, .dz-success-mark, .dz-error-mark .dz-image-preview{
     position: relative;
-    margin: 20%;
+    margin: 30%;
+    width: 420px;
+    height: 420px;
+    left: 30px;
     z-index: 20;
     opacity: 1;
-    width: 200px;
-    height: 200px;
     background: none
+}
+
+.dz-preview .dz-image {
+    border-radius: 20px;
+    overflow: hidden;
+    width: 420px;
+    height: 420px;
+    position: relative;
+    display: block;
+    z-index: 10;
 }
 
 .card-img-top {
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     object-fit: cover;
     }
 
