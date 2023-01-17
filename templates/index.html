@@ -99,8 +99,29 @@
     </form>
 
     {{ dropzone.create(action="/") }}
+    
     {{ dropzone.load_js() }}
-    {{ dropzone.config(redirect_url=url_for('result')+"#about") }}
+    <script type="text/javascript">
+      Dropzone.options.myDropzone = {
+
+        uploadMultiple: false,
+        parallelUploads: 1,
+        maxFiles: 1,
+        acceptedFiles: '.JPEG, .PNG, .JPG, .SVG, jpeg, .png, jpg, .svg',
+        init: function() {
+
+             myDropzone = this; 
+
+            function sleep (time) {
+              return new Promise((resolve) => setTimeout(resolve, time));
+              }
+
+            myDropzone.on("queuecomplete", function(file) {
+              sleep(5000).then(() => { window.location.href="{{url_for('result')+'#about'}}"});                   
+                            })
+      }}
+    </script>
+    <!-- {{ dropzone.config(redirect_url=url_for('result')+"#about") }} -->
 
     <div id="gallery">  </div>
     {% else %}
